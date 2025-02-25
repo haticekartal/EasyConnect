@@ -1,0 +1,113 @@
+/* src/styles/Home.css */
+.home-container {
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 70px;
+  flex-direction: column;
+  gap: 20px;
+  font-family: 'Crimson Text', serif; /* Genel yazı tipi */
+}
+
+.homepage-img {
+  max-width: 100%;
+  height: auto;
+}
+
+.search-bar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+  max-width: 1200px;
+  padding: 10px;
+  background-color: #283646;
+  border-radius: 8px;
+  font-family: 'Crimson Text', serif; /* Arama çubuğu yazı tipi */
+}
+
+.search-bar-container select,
+.search-bar-container button {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  font-family: 'Crimson Text', serif; /* Arama çubuğu için yazı tipi */
+}
+
+.search-bar-container select {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.search-bar-container button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #283646;
+  color: white;
+  cursor: pointer;
+  border: none;
+  font-family: 'Crimson Text', serif; /* Arama çubuğu butonu yazı tipi */
+}
+
+.search-bar-container button:hover {
+  background-color: #d291bc;
+}
+
+.homerandevu-img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 20px;
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.info-card {
+  width: 413px;
+  height: 413px;
+  background-color: #283646;
+  color: white;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  font-family: 'Crimson Text', serif; /* Kartlar için yazı tipi */
+}
+
+.info-card h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  font-family: 'Crimson Text', serif; /* Kart başlıkları için yazı tipi */
+}
+
+.info-card p {
+  font-size: 16px;
+  font-family: 'Crimson Text', serif; /* Kart açıklamaları için yazı tipi */
+}
+
+.card-icon {
+  margin-bottom: 20px;
+
+}
+
+.footer {
+  background-color: #283646;
+  padding: 40px 20px; /* Footer'ı büyüttük */
+  color: white;
+  text-align: center;
+  margin-top: 50px; /* Kartlarla arasına boşluk ekledik */
+  font-family: 'Crimson Text', serif; /* Footer yazı tipi */
+}
+
+.footer img {
+  width: 120px;
+}

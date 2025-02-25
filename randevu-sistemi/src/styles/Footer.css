@@ -1,0 +1,41 @@
+.footer {
+    background-color: #283646;
+    padding: 40px 20px;
+    color: white;
+    text-align: center;
+    margin-top: 50px;
+    font-family: 'Crimson Text', serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.footer img {
+    width: 120px;
+    margin-right: 20px; /* Logo ile ikonlar arasına boşluk */
+}
+
+.footer-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px; /* İkonlar arasına boşluk ekledik */
+    flex: 1;
+    padding-left: 20px;
+}
+
+.footer-icon {
+    text-align: center; /* Her ikon ve yazıyı ortaladık */
+}
+
+.footer-icons .anticon {
+    font-size: 30px;
+    color: white;
+}
+
+.footer-icon p {
+    font-size: 14px;
+    color: white;
+    margin-top: 10px;
+}

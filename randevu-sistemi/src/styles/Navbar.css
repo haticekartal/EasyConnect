@@ -1,0 +1,26 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #1f2937;
+    padding: 10px 20px;
+  }
+  
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .menu {
+    background: none;
+    border-bottom: none;
+  }
+  
+  .menu .ant-menu-item {
+    color: white !important;
+  }
+  
+  .menu .ant-menu-item:hover {
+    color: #d291bc !important;
+  }
