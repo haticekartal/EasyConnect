@@ -1,0 +1,83 @@
+.kaydol-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.kaydol-content {
+  display: flex;
+  flex: 1;
+  width: 100%;
+}
+
+.kaydol-form-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 60%;
+  padding-left: 10%;
+}
+
+.kaydol-form-card {
+  width: 500px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.kaydol-image {
+  width: 40%;
+  background: url("../assets/kaydol.png") no-repeat center center/contain;
+  background-size: cover;
+}
+
+.remember-me {
+  display: flex;
+  justify-content: space-between;
+}
+
+.proceed-button {
+  background-color: black;
+  color: white;
+  border: none;
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.or-text {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #666;
+}
+
+.social-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.social-buttons .ant-btn {
+  font-size: 30px;
+  width: 50px;
+  height: 50px;
+}
+
+.login-text {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #333;
+}
+
+.login-link {
+  color: #1890ff;
+  text-decoration: none;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}

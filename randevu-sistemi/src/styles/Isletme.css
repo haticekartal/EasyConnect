@@ -1,0 +1,182 @@
+/* İşletme sayfası genel düzenlemeler */
+.isletme-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 0;
+  position: relative;
+}
+
+.isletme-image-container {
+  width: 100%;
+  position: relative;
+}
+
+.isletme-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Form düzenlemeleri */
+.form-container {
+  position: absolute;
+  top: 25%; /* Daha yukarı alındı */
+  left: 10%; /* Fotoğrafın soluna çekildi */
+  width: 350px;
+  perspective: 1000px;
+}
+
+.form-inner {
+  width: 100%;
+  backface-visibility: hidden;
+  transition: transform 0.6s;
+}
+
+.front {
+  position: absolute;
+  transform: rotateY(0deg);
+}
+
+.back {
+  position: absolute;
+  transform: rotateY(180deg);
+}
+
+.flip .front {
+  transform: rotateY(-180deg);
+}
+
+.flip .back {
+  transform: rotateY(0deg);
+}
+
+.register-form,
+.login-form {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Butonlar */
+.register-form-button {
+  width: 100%;
+  background-color: #283646;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+}
+
+.register-form-button:hover {
+  background-color: #0b1c2d;
+}
+
+/* Sosyal medya giriş kısmı */
+.social-media {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.social-icon {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+/* "Zaten hesabınız var mı?" kısmı */
+.switch-form {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.switch-form a {
+  color: #283646;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.switch-form a:hover {
+  text-decoration: underline;
+}
+
+/* Paketler ve fiyatlandırma kısmı */
+.paket-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 70px;
+}
+
+.paket-card {
+  background-color: #283646;
+  border-radius: 10px;
+  width: 350px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: white;
+  text-align: center;
+}
+
+.paket-header h2 {
+  font-family: "Crimson Text", serif;
+  font-size: 35px;
+  margin-bottom: 10px;
+}
+
+.paket-header .price {
+  font-family: "Crimson Text", serif;
+  font-size: 30px;
+  margin-bottom: 10px;
+  color: #d8c4b6;
+}
+
+.paket-header .payment-method {
+  font-family: "Crimson Text", serif;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.paket-features {
+  text-align: left;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.check-icon {
+  margin-right: 10px;
+}
+
+.feature span {
+  font-family: "Crimson Text", serif;
+  font-size: 20px;
+  color: white;
+}
+
+/* Footer */
+.footer {
+  background-color: #283646;
+  padding: 40px 20px;
+  color: white;
+  text-align: center;
+  margin-top: 50px;
+  font-family: "Crimson Text", serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
