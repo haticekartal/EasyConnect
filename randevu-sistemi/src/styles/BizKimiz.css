@@ -1,0 +1,142 @@
+/* Genel Konteyner */
+.bizkimiz-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Crimson Text', serif; /* Yazı tipi olarak Crimson Text */
+}
+
+/* İçerik Alanı */
+.bizkimiz-content {
+    display: flex;
+    flex: 1;
+}
+
+/* Sol Taraf */
+.bizkimiz-left {
+    flex: 1;
+    background-color: #d8c4b6;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 20px;
+}
+
+/* Sağ Taraf */
+.bizkimiz-right {
+    flex: 1;
+    background-color: #283646;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 20px;
+}
+
+/* Profil Konteyneri */
+.profile-container {
+    text-align: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Profil Fotoğrafı (Sol Taraf) */
+.sol-taraf {
+    background-image: url('../assets/hatice.png');
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 15px;
+    margin-top: 70px;
+}
+
+/* Profil Fotoğrafı (Sağ Taraf) */
+.sag-taraf {
+    background-image: url('../assets/alieren.JPG');
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 15px;
+    margin-top: 70px;
+}
+
+/* Kart Tasarımı (Metin kısmı) */
+.profile-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 90%;
+    width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-top: 20px;
+}
+
+/* Sol Profil Metni */
+.bizkimiz-left .profile-text {
+    color: black;
+}
+
+/* Sağ Profil Metni */
+.bizkimiz-right .profile-text {
+    color: white;
+}
+
+/* Profil Metni (Her iki taraf için) */
+.profile-text {
+    font-size: 25px; /* Metin boyutunu büyütme */
+    margin-top: 10px;
+    text-align: justify; /* Yazıyı iki yana yasla */
+    padding-left: 20px; /* Sol kenara boşluk */
+    padding-right: 20px; /* Sağ kenara boşluk */
+}
+
+/* Logo Konteyneri */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Linkler */
+.social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+/* Sol Taraf Link Yazı Renkleri */
+.bizkimiz-left .social-links a {
+    color: black; /* LinkedIn mavi rengi */
+}
+
+/* Sağ Taraf Link Yazı Renkleri */
+.bizkimiz-right .social-links a {
+    color: #ffffff; /* Beyaz renk */
+}
+
+/* GitHub Yazı Rengi */
+.social-links a:nth-child(2) {
+    color: #ffffff; /* GitHub siyah rengi */
+}
+
+/* Logolar */
+.social-links img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+/* Yazı ve logo üzerine gelindiğinde renk değişimi */
+.social-links a:hover {
+    opacity: 0.8; /* Hover efekti */
+}

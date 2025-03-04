@@ -22,7 +22,7 @@
 /* Form düzenlemeleri */
 .form-container {
   position: absolute;
-  top: 25%; /* Daha yukarı alındı */
+  top: 20%; /* Daha yukarı alındı */
   left: 10%; /* Fotoğrafın soluna çekildi */
   width: 350px;
   perspective: 1000px;
@@ -86,7 +86,7 @@
 }
 
 .social-icon {
-  width: 30px;
+  width: 55px;
   height: 30px;
   cursor: pointer;
 }
