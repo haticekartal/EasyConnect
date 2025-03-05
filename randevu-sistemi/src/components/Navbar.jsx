@@ -23,17 +23,11 @@ const Navbar = () => {
             <Menu.Item key="ozellikler">
               <Link to="/ozellikler" style={styles.menuItem}>ÖZELLİKLER</Link>
             </Menu.Item>
-            <Menu.Item key="fiyatlandirma">
-              <Link to="/fiyatlandirma" style={styles.menuItem}>FİYATLANDIRMA</Link>
-            </Menu.Item>
             <Menu.Item key="biz-kimiz">
               <Link to="/biz-kimiz" style={styles.menuItem}>BİZ KİMİZ</Link>
             </Menu.Item>
             <Menu.Item key="bize-ulasin">
               <Link to="/bize-ulasin" style={styles.menuItem}>BİZE ULAŞIN</Link>
-            </Menu.Item>
-            <Menu.Item key="giris">
-              <Link to="/giris" style={styles.menuItem}>GİRİŞ YAP</Link>
             </Menu.Item>
           </>
         ) : (
@@ -44,9 +38,6 @@ const Navbar = () => {
             </Menu.Item>
             <Menu.Item key="hizmetler">
               <Link to="/hizmetler" style={styles.menuItem}>HİZMETLERİMİZ</Link>
-            </Menu.Item>
-            <Menu.Item key="paketler">
-              <Link to="/paketler" style={styles.menuItem}>PAKETLERİMİZ</Link>
             </Menu.Item>
             <Menu.Item key="kaydol">
               <Link to="/kaydol" style={styles.menuItem}>KAYIT OL</Link>

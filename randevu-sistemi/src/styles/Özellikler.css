@@ -1,0 +1,101 @@
+/* Sayfa genel stil */
+.ozellikler-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    color: #283646;
+    font-family: "Crimson Text", serif;
+}
+
+/* Başlık Alanı */
+.ozellikler-header {
+    text-align: center;
+    margin: 50px 0;
+    margin-top: 170px;
+}
+
+.ozellikler-header h1 {
+    font-size: 42px;
+    font-weight: bold;
+}
+
+.ozellikler-header p {
+    font-size: 22px;
+    margin-top: 10px;
+}
+
+/* Özellik Kartları */
+.ozellikler-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.ozellik-card {
+    background: #f8f8f8;
+    color: #283646;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.ozellik-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.ozellik-card h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.ozellik-card p {
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+/* Tanıtım Alanı */
+.ozellikler-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 50px 100px;
+    margin-top: 30px;
+}
+
+.info-text {
+    width: 50%;
+}
+
+.info-text h2 {
+    font-size: 38px;
+    margin-bottom: 20px;
+}
+
+.info-text p {
+    font-size: 20px;
+    line-height: 1.6;
+}
+
+.info-image {
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.info-effect {
+    width: 100%;
+    max-width: 500px;
+    opacity: 0.9;
+    transition: transform 0.5s ease-in-out;
+}
+
+.info-effect:hover {
+    transform: scale(1.1);
+}
