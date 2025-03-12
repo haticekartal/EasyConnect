@@ -69,6 +69,10 @@
     margin-top: 30px;
 }
 
+.ozellikler-info.left-image {
+    flex-direction: row-reverse;
+}
+
 .info-text {
     width: 50%;
 }
@@ -84,9 +88,13 @@
 }
 
 .info-image {
-    width: 50%;
+    width: 45%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
+}
+
+.shifted-image {
+    margin-left: 200;
 }
 
 .info-effect {
@@ -98,4 +106,8 @@
 
 .info-effect:hover {
     transform: scale(1.1);
+}
+
+.rounded-image {
+    border-radius: 20px;
 }

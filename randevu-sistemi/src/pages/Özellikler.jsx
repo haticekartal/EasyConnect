@@ -2,7 +2,9 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "../styles/Özellikler.css";
-import ozellik from "../assets/ozellikler-banner.png"
+import ozellik from "../assets/ozellikler-banner.png";
+import ozellik1 from "../assets/ozellikler1.png";
+
 const Özellikler = () => {
   return (
     <div className="ozellikler-container">
@@ -40,10 +42,11 @@ const Özellikler = () => {
           <h2>💳 Güvenli Ödeme Sistemi</h2>
           <p>Online ödeme alarak işlemlerinizi hızlandırın.</p>
         </div>
+        
         <div className="ozellik-card">
-    <h2>🏅 Puan Sistemi</h2>
-    <p>Müşterilerinize ödüller vererek sadakatlerini kazanın. Her işlemde puan kazanıp, bunları indirim veya özel teklifler için kullanabilirler.</p>
-  </div>
+          <h2>🏅 Puan Sistemi</h2>
+          <p>Müşterilerinize ödüller vererek sadakatlerini kazanın. Her işlemde puan kazanıp, bunları indirim veya özel teklifler için kullanabilirler.</p>
+        </div>
       </div>
 
       {/* Tanıtım Alanı */}
@@ -56,8 +59,21 @@ const Özellikler = () => {
           </p>
         </div>
         <div className="info-image">
-          <img src={ozellik} alt="Özellikler Tanıtım" className="info-effect" />
-          
+          <img src={ozellik} alt="Özellikler Tanıtım" className="info-effect rounded-image" />
+        </div>
+      </div>
+
+      {/* Yeni Tanıtım Alanı */}
+      <div className="ozellikler-info reversed">
+        <div className="info-image shifted-image">
+          <img src={ozellik1} alt="Yeni Özellik Tanıtım" className="info-effect rounded-image" />
+        </div>
+        <div className="info-text">
+          <h2>Müşterilerinizi Memnun Edin</h2>
+          <p>
+            Kolay erişim ve hızlı randevu ile müşterilerinizin memnuniyetini artırın.
+            İstatistikleri inceleyin ve hizmet kalitenizi sürekli iyileştirin.
+          </p>
         </div>
       </div>
 
