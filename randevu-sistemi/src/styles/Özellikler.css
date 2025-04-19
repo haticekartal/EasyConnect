@@ -67,14 +67,42 @@
     background-color: #ffffff;
     padding: 50px 100px;
     margin-top: 30px;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
 }
 
-.ozellikler-info.left-image {
+/* Ters yerleşim */
+.ozellikler-info.reversed {
     flex-direction: row-reverse;
 }
 
+/* Sol ve Sağdan Gelen Animasyonlar */
+@keyframes slideInLeft {
+    0% {
+        transform: translateX(-200px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInRight {
+    0% {
+        transform: translateX(200px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Görsel ve Metin Animasyonları */
 .info-text {
     width: 50%;
+    animation: slideInLeft 1s ease-out;
 }
 
 .info-text h2 {
@@ -91,8 +119,10 @@
     width: 45%;
     display: flex;
     justify-content: flex-start;
+    animation: slideInRight 1s ease-out;
 }
 
+/* Görsellerin Stil Ayarı */
 .shifted-image {
     margin-left: 200;
 }
@@ -110,4 +140,14 @@
 
 .rounded-image {
     border-radius: 20px;
+}
+
+/* FadeIn Genel Animasyonu */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }

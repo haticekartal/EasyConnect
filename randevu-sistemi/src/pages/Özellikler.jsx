@@ -32,21 +32,6 @@ const Özellikler = () => {
           <h2>👥 Müşteri Geri Bildirimi</h2>
           <p>Müşteri yorumlarıyla hizmet kalitenizi sürekli geliştirin.</p>
         </div>
-
-        <div className="ozellik-card">
-          <h2>🔔 Otomatik Bildirimler</h2>
-          <p>Randevu hatırlatmaları ile müşterilerinizi bilgilendirin.</p>
-        </div>
-
-        <div className="ozellik-card">
-          <h2>💳 Güvenli Ödeme Sistemi</h2>
-          <p>Online ödeme alarak işlemlerinizi hızlandırın.</p>
-        </div>
-        
-        <div className="ozellik-card">
-          <h2>🏅 Puan Sistemi</h2>
-          <p>Müşterilerinize ödüller vererek sadakatlerini kazanın. Her işlemde puan kazanıp, bunları indirim veya özel teklifler için kullanabilirler.</p>
-        </div>
       </div>
 
       {/* Tanıtım Alanı */}

@@ -118,7 +118,7 @@
     opacity: 0;
     transform: translateX(100%);
     animation: slideInRight 1s ease-in-out forwards;
-    animation-delay: 0.3s;
+    animation-delay: 0.9s;
 }
 
 .image-effect {
