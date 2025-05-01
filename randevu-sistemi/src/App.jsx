@@ -7,6 +7,8 @@ import BizKimiz from "./pages/BizKimiz";
 import İşletmeGiriş from "./pages/İşletmeGiriş"
 import Hizmetler from "./pages/Hizmetler"
 import Özellikler from "./pages/Özellikler"
+import HizmetListesi from "./pages/HizmetListesi";
+import IsletmeDetay from "./pages/İsletmeDetay";
 
 function App() {
   return (
@@ -20,7 +22,8 @@ function App() {
         <Route path="/isletme-giris" element={<İşletmeGiriş />} />
         <Route path="/hizmetler" element={<Hizmetler />} />
         <Route path="/ozellikler" element={<Özellikler />} />
-
+        <Route path="/hizmetlerin_listesi/:service/:city" element={<HizmetListesi />} />
+        <Route path="/isletme/:name" element={<IsletmeDetay />} />
 
 
 

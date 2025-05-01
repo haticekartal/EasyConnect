@@ -6,8 +6,28 @@ import isletmeHomepage from "../assets/isletmehomepage.png";
 import homerandevu from "../assets/homerandevu.png"; 
 import { SearchOutlined } from "@ant-design/icons"; // Ant Design Büyüteç İkonu
 import { LikeOutlined, DislikeOutlined, ClockCircleOutlined } from "@ant-design/icons"; // Ant Design İkonları
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    const selectedService = document.querySelector('select[aria-label="Hizmet seçiniz"]').value;
+    const selectedCity = document.querySelector('select[aria-label="Şehir seçiniz"]').value;
+  
+    if (!selectedService || !selectedCity) {
+      alert("Lütfen hizmet ve şehir seçiniz.");
+      return;
+    }
+  
+    const urlFriendlyService = selectedService.replace(/\s+/g, "-").toLowerCase();
+    const urlFriendlyCity = selectedCity.replace(/\s+/g, "-").toLowerCase();
+  
+    navigate(`/hizmetlerin_listesi/${urlFriendlyService}/${urlFriendlyCity}`);
+  };
+  
+  
+
   return (
     <div>
       <Navbar />
@@ -33,9 +53,10 @@ const Home = () => {
             <option value="istanbul">İstanbul</option>
             <option value="ankara">Ankara</option>
             <option value="izmir">İzmir</option>
+            <option value="bursa">Bursa</option>
           </select>
 
-          <button>
+          <button onClick={handleSearch}>
             <SearchOutlined style={{ fontSize: "20px", color: "white" }} /> ARA
           </button>
         </div>
