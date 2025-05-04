@@ -24,9 +24,6 @@ function App() {
         <Route path="/ozellikler" element={<Özellikler />} />
         <Route path="/hizmetlerin_listesi/:service/:city" element={<HizmetListesi />} />
         <Route path="/isletme/:name" element={<IsletmeDetay />} />
-
-
-
       </Routes>
     </Router>
   );
