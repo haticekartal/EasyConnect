@@ -13,20 +13,23 @@ const Giris = () => {
 
   const handleLogin = async (values) => {
     setError("");
-
+  
     try {
       const response = await axios.post(
-        "https://localhost:7263/login/customer", // 🎯 Artık Customer login endpointi
+        "http://localhost:5160/login/customer",
         {
           email: values.email,
           password: values.password,
         },
         {
-          withCredentials: true, // 🍪 Cookie tabanlı auth için şart
+          withCredentials: true, // 🍪 Cookie tabanlı auth
         }
       );
-
+  
       if (response.status === 200) {
+        // 👉 Kullanıcı bilgilerini localStorage’a kaydet
+        localStorage.setItem("user", JSON.stringify(response.data));
+  
         navigate("/");
       }
     } catch (err) {
@@ -37,6 +40,7 @@ const Giris = () => {
       }
     }
   };
+  
 
   return (
     <div className="giris-container">

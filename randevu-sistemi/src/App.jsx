@@ -4,7 +4,6 @@ import Isletme from "./pages/Isletme";
 import Kaydol from "./pages/Kaydol"; // Kaydol sayfası
 import Giris from "./pages/Giris"; // Giriş sayfası
 import BizKimiz from "./pages/BizKimiz";
-import İşletmeGiriş from "./pages/İşletmeGiriş"
 import Hizmetler from "./pages/Hizmetler"
 import Özellikler from "./pages/Özellikler"
 import HizmetListesi from "./pages/HizmetListesi";
@@ -19,7 +18,6 @@ function App() {
         <Route path="/kaydol" element={<Kaydol />} />
         <Route path="/giris" element={<Giris />} />
         <Route path="/biz-kimiz" element={<BizKimiz />} />
-        <Route path="/isletme-giris" element={<İşletmeGiriş />} />
         <Route path="/hizmetler" element={<Hizmetler />} />
         <Route path="/ozellikler" element={<Özellikler />} />
         <Route path="/hizmetlerin_listesi/:service/:city" element={<HizmetListesi />} />

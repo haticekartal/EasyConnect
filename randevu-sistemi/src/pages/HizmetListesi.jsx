@@ -10,7 +10,7 @@ import fotoDeneme from "../assets/salon.png";
 
 
 const HizmetListesi = () => {
-  const { serviceId, provinceId } = useParams();
+  const { service, city } = useParams();
   const navigate = useNavigate();
   const location = useLocation(); // ✅ burada olmalı
 
@@ -21,20 +21,28 @@ const HizmetListesi = () => {
   const cityName = location.state?.cityName || "Şehir";
 
   useEffect(() => {
-    const sid = parseInt(serviceId);
-    const pid = parseInt(provinceId);
+    const sid = parseInt(service);
+    const pid = parseInt(city);
 
-    if (!sid || !pid) {
-      console.warn("Geçersiz serviceId veya provinceId");
+    console.log("service param:", service);
+    console.log("city param:", city);
+    console.log("parsed sid:", sid);
+    console.log("parsed pid:", pid);
+
+    if (isNaN(sid) || isNaN(pid) || sid <= 0 || pid <= 0) {
+      console.warn("Geçersiz service veya city parametresi");
       setLoading(false);
       return;
     }
 
+
     const fetchData = async () => {
+
+
       setLoading(true);
       try {
         const response = await fetch(
-          `https://localhost:7263/Business/GetListForServiceAndProvince/${sid}/${pid}`
+          `http://localhost:5160/Business/GetListForServiceAndProvince/${sid}/${pid}`
         );
         const data = await response.json();
         setBusinesses(data);
@@ -47,7 +55,7 @@ const HizmetListesi = () => {
     };
 
     fetchData();
-  }, [serviceId, provinceId]);
+  }, [service, city]);
 
   return (
     <div className="hizmet-listesi-container">

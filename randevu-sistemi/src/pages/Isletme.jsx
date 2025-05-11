@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { Form, Input, Button, message } from "antd";
+import { Form, Input, Button, message, Card, Spin } from "antd";
 import "../styles/Isletme.css";
 import foto from "../assets/isletmeler.png";
 import googleicon from "../assets/googleicon.png";
@@ -12,48 +12,36 @@ import axios from "axios";
 
 const Isletme = () => {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [businessData, setBusinessData] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
+
+
 
   const handleFlip = () => setIsFlipped(!isFlipped);
 
   const handleRegister = async (values) => {
-    const { email, password } = values;
-  
-    const dto = {
-      email,
-      password,
-      fullName: "",
-      businessName: "",
-      phone: "",
-      address: ""
-    };
-  
+    const { email, password, fullName, businessName, phone, address } = values;
+    const dto = { email, password, fullName, businessName, phone, address };
+
     try {
-      const response = await axios.post(
-        "https://localhost:7263/register/business",
-        dto,
-        { withCredentials: true }
-      );
-  
+      const response = await axios.post("http://localhost:5160/register/business", dto);
       if (response.status === 200) {
         message.success("Kayıt başarılı, şimdi giriş yapabilirsiniz.");
         setIsFlipped(true);
       }
     } catch (error) {
       const data = error.response?.data;
-  
       if (Array.isArray(data)) {
         data.forEach((err) => {
           const msg = err?.description || err?.code || "Bilinmeyen bir hata oluştu.";
           message.error(msg);
         });
-      }
-  
-      else if (data?.errors && typeof data.errors === "object") {
+      } else if (data?.errors && typeof data.errors === "object") {
         Object.values(data.errors).flat().forEach((msg) => message.error(msg));
-      }
-  
-      else {
+      } else {
         message.error("Kayıt sırasında bir hata oluştu.");
       }
     }
@@ -61,22 +49,16 @@ const Isletme = () => {
 
   const handleLogin = async (values) => {
     const { email, password } = values;
-
     try {
-      const response = await axios.post(
-        "https://localhost:7263/login/business",
-        { email, password },
-        { withCredentials: true }
-      );
-
+      const response = await axios.post("http://localhost:5160/login/business", { email, password });
       if (response.status === 200) {
-        localStorage.setItem("userType", "business");
+        const business = response.data; // ✅ tüm işletme objesi geldi
+        localStorage.setItem("business", JSON.stringify(business));
         message.success("Giriş başarılı!");
-        navigate("/isletme-giris");
+        navigate("/"); // yönlendirme
       }
     } catch (error) {
       const data = error.response?.data;
-
       if (data?.errors && typeof data.errors === "object") {
         Object.values(data.errors).flat().forEach((msg) => message.error(msg));
       } else if (Array.isArray(data)) {
@@ -89,6 +71,7 @@ const Isletme = () => {
     }
   };
 
+
   return (
     <div className="isletme-container">
       <Navbar />
@@ -97,45 +80,27 @@ const Isletme = () => {
       </div>
 
       <div className={`form-container ${isFlipped ? "flip" : ""}`}>
-        {/* KAYIT FORMU */}
         <div className="form-inner front">
           <h2>İşletme Kaydı</h2>
           <Form name="register" layout="vertical" onFinish={handleRegister}>
-            <Form.Item
-              name="email"
-              label="Email"
-              rules={[{ required: true, type: "email", message: "Geçerli bir email girin!" }]}
-            >
+            <Form.Item name="email" label="Email" rules={[{ required: true, type: "email" }]}>
               <Input placeholder="Email adresiniz" />
             </Form.Item>
-
-            <Form.Item
-              name="password"
-              label="Şifre"
-              rules={[{ required: true, min: 6, message: "Şifre en az 6 karakter olmalı!" }]}
-            >
+            <Form.Item name="password" label="Şifre" rules={[{ required: true, min: 6 }]}>
               <Input.Password placeholder="Şifreniz" />
             </Form.Item>
-
-            <Form.Item
-              name="confirm"
-              label="Şifreyi Onayla"
-              dependencies={["password"]}
-              hasFeedback
-              rules={[
-                { required: true, message: "Şifreyi onaylayın!" },
-                ({ getFieldValue }) => ({
-                  validator(_, value) {
-                    return !value || getFieldValue("password") === value
-                      ? Promise.resolve()
-                      : Promise.reject("Şifreler eşleşmiyor!");
-                  },
-                }),
-              ]}
-            >
-              <Input.Password placeholder="Şifrenizi tekrar girin" />
+            <Form.Item name="fullName" label="Ad Soyad" rules={[{ required: true }]}>
+              <Input placeholder="Adınız ve Soyadınız" />
             </Form.Item>
-
+            <Form.Item name="businessName" label="İşletme Adı" rules={[{ required: true }]}>
+              <Input placeholder="İşletmenizin adı" />
+            </Form.Item>
+            <Form.Item name="phone" label="Telefon" rules={[{ required: true }]}>
+              <Input placeholder="Telefon numaranız" />
+            </Form.Item>
+            <Form.Item name="address" label="Adres" rules={[{ required: true }]}>
+              <Input placeholder="Adresiniz" />
+            </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit" className="register-form-button">
                 Kayıt Ol
@@ -156,22 +121,13 @@ const Isletme = () => {
           </div>
         </div>
 
-        {/* GİRİŞ FORMU */}
         <div className="form-inner back">
           <h2>İşletme Girişi</h2>
           <Form name="login" className="login-form" layout="vertical" onFinish={handleLogin}>
-            <Form.Item
-              name="email"
-              label="Email"
-              rules={[{ required: true, message: "Email zorunludur!" }]}
-            >
+            <Form.Item name="email" label="Email" rules={[{ required: true }]}>
               <Input placeholder="Email adresiniz" />
             </Form.Item>
-            <Form.Item
-              name="password"
-              label="Şifre"
-              rules={[{ required: true, message: "Şifre zorunludur!" }]}
-            >
+            <Form.Item name="password" label="Şifre" rules={[{ required: true }]}>
               <Input.Password placeholder="Şifreniz" />
             </Form.Item>
             <Form.Item>

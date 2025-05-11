@@ -23,10 +23,7 @@ const Kaydol = () => {
     };
 
     try {
-      const response = await axios.post("https://localhost:7263/register/customer", payload, {
-        withCredentials: true
-      });
-
+      const response = await axios.post("http://localhost:5160/register/customer", payload, { withCredentials: true });
       if (response.status === 200) {
         setSuccessMessage("Kayıt başarılı! Giriş sayfasına yönlendiriliyorsunuz...");
         setTimeout(() => {

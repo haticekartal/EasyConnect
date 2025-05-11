@@ -14,7 +14,7 @@ const Home = () => {
   const [cities, setCities] = useState([]);
 
   useEffect(() => {
-    axios.get("https://localhost:7263/Service/GetAll")
+    axios.get("http://localhost:5160/Service/GetAll")
       .then(response => {
         if (response.data.success) {
           setServices(response.data.data);
