@@ -52,11 +52,14 @@ const Isletme = () => {
     try {
       const response = await axios.post("http://localhost:5160/login/business", { email, password });
       if (response.status === 200) {
-        const business = response.data; // ✅ tüm işletme objesi geldi
+        console.log(response)
+        const business = response.data;
         localStorage.setItem("business", JSON.stringify(business));
+        localStorage.setItem("userId", business.userId); // ✅ Bunu ekle
         message.success("Giriş başarılı!");
-        navigate("/"); // yönlendirme
+        navigate("/");
       }
+
     } catch (error) {
       const data = error.response?.data;
       if (data?.errors && typeof data.errors === "object") {

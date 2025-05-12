@@ -13,7 +13,7 @@ const Giris = () => {
 
   const handleLogin = async (values) => {
     setError("");
-  
+
     try {
       const response = await axios.post(
         "http://localhost:5160/login/customer",
@@ -25,13 +25,13 @@ const Giris = () => {
           withCredentials: true, // 🍪 Cookie tabanlı auth
         }
       );
-  
+
       if (response.status === 200) {
-        // 👉 Kullanıcı bilgilerini localStorage’a kaydet
         localStorage.setItem("user", JSON.stringify(response.data));
-  
+        localStorage.setItem("userId", response.data.userId); // ✅ userId'yi ayrı da sakla
         navigate("/");
       }
+
     } catch (err) {
       if (err.response?.status === 401) {
         setError("Email veya şifre hatalı.");
@@ -40,7 +40,7 @@ const Giris = () => {
       }
     }
   };
-  
+
 
   return (
     <div className="giris-container">

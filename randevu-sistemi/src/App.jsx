@@ -8,6 +8,8 @@ import Hizmetler from "./pages/Hizmetler"
 import Özellikler from "./pages/Özellikler"
 import HizmetListesi from "./pages/HizmetListesi";
 import IsletmeDetay from "./pages/İsletmeDetay";
+import IsletmeProfil from "./pages/İsletmeProfil";
+import MyAppointments from "./pages/MyAppointments";
 
 function App() {
   return (
@@ -22,6 +24,9 @@ function App() {
         <Route path="/ozellikler" element={<Özellikler />} />
         <Route path="/hizmetlerin_listesi/:service/:city" element={<HizmetListesi />} />
         <Route path="/isletme/:name" element={<IsletmeDetay />} />
+        <Route path="/isletmeProfil" element={<IsletmeProfil/>} />
+        <Route path="/Randevularim" element={<MyAppointments/>} />
+
       </Routes>
     </Router>
   );

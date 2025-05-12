@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Card, Rate } from "antd";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "../styles/HizmetListesi.css";
 import fotoDeneme from "../assets/salon.png";
 
-
 const HizmetListesi = () => {
   const { service, city } = useParams();
   const navigate = useNavigate();
-  const location = useLocation(); // ✅ burada olmalı
+  const location = useLocation();
 
   const [businesses, setBusinesses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,41 +18,36 @@ const HizmetListesi = () => {
   const cityName = location.state?.cityName || "Şehir";
 
   useEffect(() => {
-    const sid = parseInt(service);
-    const pid = parseInt(city);
+  const sid = parseInt(service);
+  const pid = parseInt(city);
 
-    console.log("service param:", service);
-    console.log("city param:", city);
-    console.log("parsed sid:", sid);
-    console.log("parsed pid:", pid);
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("http://localhost:5160/Business/GetAll");
+      const result = await response.json();
+      console.log("Gelen veri:", result);
 
-    if (isNaN(sid) || isNaN(pid) || sid <= 0 || pid <= 0) {
-      console.warn("Geçersiz service veya city parametresi");
-      setLoading(false);
-      return;
-    }
-
-
-    const fetchData = async () => {
-
-
-      setLoading(true);
-      try {
-        const response = await fetch(
-          `http://localhost:5160/Business/GetListForServiceAndProvince/${sid}/${pid}`
+      if (result.success) {
+        const filtered = result.data.filter(
+          (b) => b.categoryId === sid && b.provinceCode === pid
         );
-        const data = await response.json();
-        setBusinesses(data);
-      } catch (error) {
-        console.error("API hatası:", error);
+        setBusinesses(filtered);
+      } else {
+        console.warn("Veri alınamadı:", result.message);
         setBusinesses([]);
-      } finally {
-        setLoading(false);
       }
-    };
+    } catch (error) {
+      console.error("API hatası:", error);
+      setBusinesses([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchData();
-  }, [service, city]);
+  fetchData();
+}, [service, city]);
+
 
   return (
     <div className="hizmet-listesi-container">
@@ -67,21 +59,21 @@ const HizmetListesi = () => {
       <div className="card-wrapper">
         {loading ? (
           <p>Yükleniyor...</p>
-        ) : businesses.length > 0 ? (
+        ) : Array.isArray(businesses) && businesses.length > 0 ? (
           businesses.map((item, index) => (
             <Card
               key={index}
               className="salon-card"
               hoverable
               onClick={() =>
-                navigate(`/isletme/${item.businessName.replace(/\s+/g, "-")}`, {
+                navigate(`/isletme/${item.businessName?.replace(/\s+/g, "-")}`, {
                   state: item,
                 })
               }
               cover={
                 <img
                   className="salon-image"
-                  alt={item.businessName}
+                  alt={item.businessName || "İşletme"}
                   src={fotoDeneme}
                 />
               }

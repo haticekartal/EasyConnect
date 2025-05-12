@@ -14,7 +14,7 @@ const Home = () => {
   const [cities, setCities] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5160/Service/GetAll")
+    axios.get("http://localhost:5160/Category/GetAll")
       .then(response => {
         if (response.data.success) {
           setServices(response.data.data);
@@ -38,23 +38,25 @@ const Home = () => {
   const handleSearch = () => {
     const selectedServiceRaw = document.querySelector('select[aria-label="Hizmet seçiniz"]').value;
     const selectedCityRaw = document.querySelector('select[aria-label="Şehir seçiniz"]').value;
-  
+
     if (!selectedServiceRaw || !selectedCityRaw) {
       alert("Lütfen hizmet ve şehir seçiniz.");
       return;
     }
-  
+
     const selectedService = JSON.parse(selectedServiceRaw);
     const selectedCity = JSON.parse(selectedCityRaw);
-  
+
+    console.log("Seçilen hizmet:", selectedService);
+    console.log("Seçilen şehir:", selectedCity);
     navigate(`/hizmetlerin_listesi/${selectedService.id}/${selectedCity.id}`, {
       state: {
-        serviceTitle: selectedService.title,
+        serviceTitle: selectedService.name,
         cityName: selectedCity.name
       }
     });
   };
-  
+
 
   return (
     <div>
@@ -63,23 +65,23 @@ const Home = () => {
         <img src={isletmeHomepage} alt="İşletme Homepage" className="homepage-img" />
 
         <div className="search-bar-container">
-        <select aria-label="Hizmet seçiniz">
-  <option value="">Aradığınız hizmeti seçiniz</option>
-  {services.map(service => (
-    <option key={service.id} value={JSON.stringify({ id: service.id, title: service.title })}>
-      {service.title}
-    </option>
-  ))}
-</select>
+          <select aria-label="Hizmet seçiniz">
+            <option value="">Aradığınız hizmeti seçiniz</option>
+            {services.map(service => (
+              <option key={service.id} value={JSON.stringify({ id: service.id, name: service.name })}>
+                {service.name}
+              </option>
+            ))}
+          </select>
 
           <select aria-label="Şehir seçiniz">
-  <option value="">Şehir seçiniz</option>
-  {cities.map(city => (
-    <option key={city.id} value={JSON.stringify({ id: city.id, name: city.name })}>
-      {city.name}
-    </option>
-  ))}
-</select>
+            <option value="">Şehir seçiniz</option>
+            {cities.map(city => (
+              <option key={city.id} value={JSON.stringify({ id: city.id, name: city.name })}>
+                {city.name}
+              </option>
+            ))}
+          </select>
 
           <button onClick={handleSearch}>
             <SearchOutlined style={{ fontSize: "20px", color: "white" }} /> ARA

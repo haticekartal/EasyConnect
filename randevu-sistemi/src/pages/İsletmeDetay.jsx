@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import StaffList from "../components/StaffList";
 import "../styles/IsletmeDetay.css";
 import { Modal, Select, TimePicker, DatePicker, message } from "antd";
 import dayjs from "dayjs";
-
+import axios from "axios";
+import CreateAppointment from "../components/CreateAppointment";
 const { Option } = Select;
+
+const days = [
+  "Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"
+];
 
 const IsletmeDetay = () => {
   const { name } = useParams();
@@ -17,6 +23,65 @@ const IsletmeDetay = () => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedService, setSelectedService] = useState(null);
+
+  const [salonId, setSalonId] = useState(null);
+  const [staffList, setStaffList] = useState([]);
+  const [serviceList, setServiceList] = useState([]);
+  const [workingHours, setWorkingHours] = useState([]);
+
+  useEffect(() => {
+    if (!salon?.userId) return;
+
+    axios
+      .get(`http://localhost:5160/business/get-by-user/${salon.userId}`)
+      .then((res) => {
+        const id = res.data.id;
+        setSalonId(id);
+
+        // ✅ Personelleri al
+        axios.get("http://localhost:5160/staff/getall").then((res2) => {
+          const filtered = res2.data.data.filter(
+            (s) => s.businessProfileId === id
+          );
+          setStaffList(filtered);
+        });
+
+        // ✅ Hizmetleri al
+        axios
+          .get(`http://localhost:5160/Business/GetServicesForBusinessProfile/${id}`)
+          .then((res3) => {
+            setServiceList(res3.data.data || []);
+          });
+
+        // ✅ Çalışma saatlerini al
+        axios
+          .get(`http://localhost:5160/WorkingHour/GetByBusinessProfileId/${id}`)
+          .then((res4) => {
+            setWorkingHours(res4.data.data || []);
+          });
+      })
+      .catch((err) => {
+        console.error("Salon ID alınamadı:", err);
+      });
+  }, [salon?.userId]);
+
+  const handleRandevuAl = () => setModalOpen(true);
+  const handleModalClose = () => setModalOpen(false);
+
+  const handleOnayla = () => {
+    if (!selectedDate || !selectedTime || !selectedStaff || !selectedService) {
+      message.error("Lütfen tarih, saat, personel ve hizmet seçiniz.");
+      return;
+    }
+
+    message.success("Randevunuz başarıyla alındı!");
+    setModalOpen(false);
+
+    setSelectedStaff(null);
+    setSelectedTime(null);
+    setSelectedDate(null);
+    setSelectedService(null);
+  };
 
   if (!salon) {
     return (
@@ -30,57 +95,33 @@ const IsletmeDetay = () => {
     );
   }
 
-  const handleRandevuAl = () => setModalOpen(true);
-  const handleModalClose = () => setModalOpen(false);
-
-  const handleOnayla = () => {
-    if (!selectedDate || !selectedTime || !selectedStaff || !selectedService) {
-      message.error("Lütfen tarih, saat, personel ve hizmet seçiniz.");
-      return;
-    }
-
-    console.log("📅 Tarih:", selectedDate.format("YYYY-MM-DD"));
-    console.log("⏰ Saat:", selectedTime.format("HH:mm"));
-    console.log("👤 Personel:", selectedStaff);
-    console.log("💇 Hizmet:", selectedService);
-
-    message.success("Randevunuz başarıyla alındı!");
-    setModalOpen(false);
-
-    // Seçimleri sıfırla
-    setSelectedStaff(null);
-    setSelectedTime(null);
-    setSelectedDate(null);
-    setSelectedService(null);
-  };
-
   return (
     <div className="isletme-detay-container">
       <Navbar />
       <div className="business-box">
         {/* SOL TARAF */}
         <div className="left-side">
-          <h2>{salon.name}</h2>
-          <p>⭐ {salon.rating}</p>
-          <img src={salon.image} alt="Ana Fotoğraf" className="main-img" />
-
-          {salon.images && salon.images.length > 1 && (
-            <div className="sub-images">
-              {salon.images.map((img, i) => (
-                <img key={i} src={img} alt={`galeri-${i}`} />
-              ))}
-            </div>
-          )}
+          <h2>{salon.businessName}</h2>
+          <p>⭐ {salon.rating || "Henüz oy yok"}</p>
+          <img
+            src={salon.image || "https://via.placeholder.com/600x300?text=Fotoğraf+Yok"}
+            alt="Ana Fotoğraf"
+            className="main-img"
+          />
 
           <div className="hours-box">
             <h3>Çalışma Saatleri</h3>
-            {salon.workingHours
-              ? Object.entries(salon.workingHours).map(([gun, saat]) => (
-                  <p key={gun}>
-                    {gun}: {saat}
+            {workingHours.length > 0 ? (
+              workingHours
+                .sort((a, b) => a.dayOfWeek - b.dayOfWeek)
+                .map((item) => (
+                  <p key={item.id}>
+                    {days[item.dayOfWeek]}: {item.startTime.slice(0, 5)} - {item.endTime.slice(0, 5)}
                   </p>
                 ))
-              : <p>Bilgi bulunamadı.</p>}
+            ) : (
+              <p>Bilgi bulunamadı.</p>
+            )}
           </div>
         </div>
 
@@ -88,10 +129,10 @@ const IsletmeDetay = () => {
         <div className="right-side">
           <div className="hizmetler">
             <h3>Hizmetler</h3>
-            {salon.services && salon.services.length > 0 ? (
-              salon.services.map((s, i) => (
+            {serviceList.length > 0 ? (
+              serviceList.map((s, i) => (
                 <p key={i}>
-                  {s.name} - <b>{s.price} TL</b>
+                  {s.title} - <b>{s.price} TL</b>
                 </p>
               ))
             ) : (
@@ -110,79 +151,22 @@ const IsletmeDetay = () => {
 
           <div className="staff-box">
             <h3>Personeller</h3>
-            {salon.staff && salon.staff.length > 0 ? (
-              salon.staff.map((p, i) => <p key={i}>👤 {p}</p>)
-            ) : (
-              <p>Personel bilgisi bulunamadı.</p>
-            )}
+            {salonId ? <StaffList businessId={salonId} /> : <p>Yükleniyor...</p>}
           </div>
         </div>
       </div>
       <Footer />
 
       {/* MODAL - RANDEVU */}
-      <Modal
-        title="Randevu Oluştur"
+      <CreateAppointment
         open={modalOpen}
-        onCancel={handleModalClose}
-        onOk={handleOnayla}
-        okText="Onayla"
-        cancelText="Vazgeç"
-      >
-        {/* Tarih seçimi */}
-        <div style={{ marginBottom: 20 }}>
-          <label>Tarih Seç:</label>
-          <DatePicker
-            style={{ width: "100%" }}
-            onChange={(date) => setSelectedDate(date)}
-            disabledDate={(current) => current && current < dayjs().startOf("day")}
-          />
-        </div>
+        onClose={handleModalClose}
+        salonId={salonId}
+        staffList={staffList}
+        serviceList={serviceList}
+        userId={localStorage.getItem("userId")}
+      />
 
-        {/* Saat seçimi */}
-        <div style={{ marginBottom: 20 }}>
-          <label>Saat Seç:</label>
-          <TimePicker
-            use12Hours={false}
-            format="HH:mm"
-            onChange={(time) => setSelectedTime(time)}
-            style={{ width: "100%" }}
-            minuteStep={15}
-          />
-        </div>
-
-        {/* Hizmet seçimi */}
-        <div style={{ marginBottom: 20 }}>
-          <label>Hizmet Seç:</label>
-          <Select
-            style={{ width: "100%" }}
-            placeholder="Hizmet seçiniz"
-            onChange={(value) => setSelectedService(value)}
-          >
-            {salon.services.map((s, i) => (
-              <Option key={i} value={s.name}>
-                {s.name} - {s.price} TL
-              </Option>
-            ))}
-          </Select>
-        </div>
-
-        {/* Personel seçimi */}
-        <div style={{ marginBottom: 0 }}>
-          <label>Personel Seç:</label>
-          <Select
-            style={{ width: "100%" }}
-            placeholder="Personel seçiniz"
-            onChange={(value) => setSelectedStaff(value)}
-          >
-            {salon.staff.map((person, i) => (
-              <Option key={i} value={person}>
-                {person}
-              </Option>
-            ))}
-          </Select>
-        </div>
-      </Modal>
     </div>
   );
 };

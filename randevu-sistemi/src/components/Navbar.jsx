@@ -58,24 +58,32 @@ const Navbar = () => {
                 title={<><UserOutlined /> {user.fullName}</>}
                 style={styles.menuItem}
               >
+                <Menu.Item key="myAppointments">
+                  <Link to="/randevularim">Randevularım</Link>
+                </Menu.Item>
                 <Menu.Item key="logoutUser" icon={<LogoutOutlined />} onClick={handleLogoutUser}>
                   ÇIKIŞ YAP
                 </Menu.Item>
               </Menu.SubMenu>
             )}
 
+
             {/* İşletme varsa */}
             {business && (
               <Menu.SubMenu
                 key="business"
-                title={<><ShopOutlined /> {business.businessName}</>}
+                title={<><ShopOutlined /> {business.fullName}</>}
                 style={styles.menuItem}
               >
+                <Menu.Item key="isletmeProfil">
+                  <Link to="/isletmeProfil" >Profilim</Link>
+                </Menu.Item>
                 <Menu.Item key="logoutBusiness" icon={<LogoutOutlined />} onClick={handleLogoutBusiness}>
                   ÇIKIŞ YAP
                 </Menu.Item>
               </Menu.SubMenu>
             )}
+
 
             {/* Kullanıcı ve işletme yoksa */}
             {!user && !business && (

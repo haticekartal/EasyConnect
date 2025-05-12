@@ -1,0 +1,14 @@
+/* StaffForm.css */
+.staff-form-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.staff-inputs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
