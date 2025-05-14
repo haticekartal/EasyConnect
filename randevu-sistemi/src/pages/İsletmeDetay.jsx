@@ -102,12 +102,17 @@ const IsletmeDetay = () => {
         {/* SOL TARAF */}
         <div className="left-side">
           <h2>{salon.businessName}</h2>
-          <p>⭐ {salon.rating || "Henüz oy yok"}</p>
+          
           <img
-            src={salon.image || "https://via.placeholder.com/600x300?text=Fotoğraf+Yok"}
-            alt="Ana Fotoğraf"
-            className="main-img"
-          />
+  src={
+    salon.imageData
+      ? `data:image/jpeg;base64,${salon.imageData}`
+      : "https://via.placeholder.com/600x300?text=Fotoğraf+Yok"
+  }
+  alt="Ana Fotoğraf"
+  className="main-img"
+/>
+
 
           <div className="hours-box">
             <h3>Çalışma Saatleri</h3>

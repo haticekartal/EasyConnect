@@ -8,13 +8,11 @@ import StaffForm from "../components/StaffForm";
 import AssignService from "../components/AssignService";
 import WorkingHourForm from "../components/WorkingHourForm";
 
-
-
 const { Option } = Select;
 
 const IsletmeProfil = () => {
     const [formData, setFormData] = useState({
-        id: null, // ✅ Güncelleme için eklendi
+        id: null,
         userId: "",
         businessName: "",
         phone: "",
@@ -39,7 +37,6 @@ const IsletmeProfil = () => {
 
         setFormData((prev) => ({ ...prev, userId }));
 
-        // ✅ Kayıtlı işletme bilgilerini getir
         axios.get(`http://localhost:5160/business/get-by-user/${userId}`)
             .then((res) => {
                 if (res.data) {
@@ -50,9 +47,7 @@ const IsletmeProfil = () => {
                 console.log("Henüz kayıtlı işletme yok.");
             });
 
-        // Şehirleri al
-        axios
-            .get("https://turkiyeapi.dev/api/v1/provinces")
+        axios.get("https://turkiyeapi.dev/api/v1/provinces")
             .then((res) => {
                 if (Array.isArray(res.data.data)) {
                     setCities(res.data.data);
@@ -60,9 +55,7 @@ const IsletmeProfil = () => {
             })
             .catch(() => message.error("Şehirler alınamadı."));
 
-        // Kategorileri al
-        axios
-            .get("http://localhost:5160/Category/GetAll")
+        axios.get("http://localhost:5160/Category/GetAll")
             .then((res) => {
                 if (Array.isArray(res.data)) {
                     setCategories(res.data);
@@ -77,14 +70,24 @@ const IsletmeProfil = () => {
         setFormData((prev) => ({ ...prev, [field]: value }));
     };
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFormData((prev) => ({
+                    ...prev,
+                    imageData: reader.result.split(",")[1], // sadece base64 içeriği al
+                }));
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleSubmit = async () => {
-        if (
-            !formData.businessName ||
-            !formData.phone ||
-            !formData.address ||
-            !formData.provinceCode ||
-            !formData.categoryId
-        ) {
+        const { businessName, phone, address, provinceCode, categoryId } = formData;
+
+        if (!businessName || !phone || !address || !provinceCode || !categoryId) {
             message.warning("Lütfen tüm zorunlu alanları doldurunuz.");
             return;
         }
@@ -100,7 +103,6 @@ const IsletmeProfil = () => {
                 await axios.post("http://localhost:5160/Business", postData);
                 setSuccessMessage("İşletme başarıyla kaydedildi.");
 
-                // ✅ Sadece ilk kayıt sonrası sayfayı yenile
                 setTimeout(() => {
                     window.location.reload();
                 }, 1000);
@@ -110,9 +112,6 @@ const IsletmeProfil = () => {
             message.error("İşlem sırasında bir hata oluştu.");
         }
     };
-
-
-
 
     return (
         <div>
@@ -175,11 +174,10 @@ const IsletmeProfil = () => {
                     ))}
                 </Select>
 
-                <Input.TextArea
-                    rows={3}
-                    placeholder="Base64 görsel (isteğe bağlı)"
-                    value={formData.imageData}
-                    onChange={(e) => handleChange("imageData", e.target.value)}
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
                     style={{ marginTop: 10 }}
                 />
 
@@ -191,10 +189,10 @@ const IsletmeProfil = () => {
                     {formData.id ? "Güncelle" : "Kaydet"}
                 </Button>
             </div>
+
             {formData.id && <StaffForm businessId={formData.id} />}
             {formData.id && <AssignService businessId={formData.id} />}
             {formData.id && <WorkingHourForm businessId={formData.id} />}
-
             <Footer />
         </div>
     );
