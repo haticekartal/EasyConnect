@@ -163,14 +163,17 @@ const IsletmeDetay = () => {
       <Footer />
 
       {/* MODAL - RANDEVU */}
-      <CreateAppointment
-        open={modalOpen}
-        onClose={handleModalClose}
-        salonId={salonId}
-        staffList={staffList}
-        serviceList={serviceList}
-        userId={localStorage.getItem("userId")}
-      />
+      {salonId && (
+  <CreateAppointment
+    open={modalOpen}
+    onClose={handleModalClose}
+    salonId={salonId}
+    staffList={staffList}
+    serviceList={serviceList}
+    userId={localStorage.getItem("userId")}
+  />
+)}
+
 
     </div>
   );

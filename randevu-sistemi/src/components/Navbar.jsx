@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, Dropdown } from "antd";
-import { UserOutlined, LogoutOutlined, ShopOutlined } from "@ant-design/icons";
+import { UserOutlined, LogoutOutlined, ShopOutlined, CalendarOutlined } from "@ant-design/icons";
 import easyconnectLogo from "../assets/easyconnectlogo.svg";
 import isletmeLogo from "../assets/isletmelogo.png";
 
@@ -67,7 +67,6 @@ const Navbar = () => {
               </Menu.SubMenu>
             )}
 
-
             {/* İşletme varsa */}
             {business && (
               <Menu.SubMenu
@@ -76,14 +75,16 @@ const Navbar = () => {
                 style={styles.menuItem}
               >
                 <Menu.Item key="isletmeProfil">
-                  <Link to="/isletmeProfil" >Profilim</Link>
+                  <Link to="/isletmeProfil">Profilim</Link>
+                </Menu.Item>
+                <Menu.Item key="isletmeRandevular">
+                  <Link to="/isletme-randevular"><CalendarOutlined /> Randevular</Link>
                 </Menu.Item>
                 <Menu.Item key="logoutBusiness" icon={<LogoutOutlined />} onClick={handleLogoutBusiness}>
                   ÇIKIŞ YAP
                 </Menu.Item>
               </Menu.SubMenu>
             )}
-
 
             {/* Kullanıcı ve işletme yoksa */}
             {!user && !business && (

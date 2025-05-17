@@ -5,14 +5,16 @@ import axios from "axios";
 
 const { Option } = Select;
 
-const CreateAppointment = ({ open, onClose, salonId, staffList, serviceList, userId }) => {
+const CreateAppointment = ({ open, onClose, salonId, staffList, serviceList }) => {
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
     const [selectedService, setSelectedService] = useState(null);
     const [selectedStaff, setSelectedStaff] = useState(null);
     const [workingHours, setWorkingHours] = useState([]);
     const [appointments, setAppointments] = useState([]);
-    const [errorMessage, setErrorMessage] = useState(null); // ❗ Hata mesajı için
+    const [errorMessage, setErrorMessage] = useState(null);
+
+    const userId = JSON.parse(localStorage.getItem("user"))?.userId;
 
     useEffect(() => {
         if (!salonId) return;
@@ -30,9 +32,9 @@ const CreateAppointment = ({ open, onClose, salonId, staffList, serviceList, use
     const getDisabledHours = () => {
         if (!selectedDate) return [];
 
-        const day = dayjs(selectedDate).day(); // 0-6
+        const day = dayjs(selectedDate).day();
         const dayInfo = workingHours.find(w => w.dayOfWeek === day);
-        if (!dayInfo) return Array.from({ length: 24 }, (_, i) => i); // tüm saatleri devre dışı bırak
+        if (!dayInfo) return Array.from({ length: 24 }, (_, i) => i);
 
         const now = dayjs();
         const isToday = dayjs(selectedDate).isSame(now, "day");
@@ -50,7 +52,7 @@ const CreateAppointment = ({ open, onClose, salonId, staffList, serviceList, use
     };
 
     const handleSave = () => {
-        setErrorMessage(null); // önceki hatayı temizle
+        setErrorMessage(null);
 
         if (!selectedDate || !selectedTime || !selectedService || !selectedStaff) {
             setErrorMessage("Lütfen tüm alanları doldurunuz.");
@@ -62,13 +64,12 @@ const CreateAppointment = ({ open, onClose, salonId, staffList, serviceList, use
 
         if (!service || !staff) return;
 
-        const duration = service.duration; // "00:30:00"
+        const duration = service.duration;
         const appointmentDate = dayjs(selectedDate)
             .hour(selectedTime.hour())
             .minute(selectedTime.minute())
             .second(0)
-            .format("YYYY-MM-DDTHH:mm:ss"); // 📌 ISO format ama local timezone
-
+            .format("YYYY-MM-DDTHH:mm:ss");
 
         const isBusy = appointments.some(
             a =>
@@ -120,9 +121,25 @@ const CreateAppointment = ({ open, onClose, salonId, staffList, serviceList, use
                 onClose();
                 setErrorMessage(null);
             }}
-            onOk={handleSave}
-            okText="Onayla"
-            cancelText="Vazgeç"
+            footer={
+                userId ? (
+                    [
+                        <button key="cancel" onClick={onClose} className="ant-btn">
+                            Vazgeç
+                        </button>,
+                        <button key="ok" onClick={handleSave} className="ant-btn ant-btn-primary">
+                            Onayla
+                        </button>
+                    ]
+                ) : (
+                    <Alert
+                        message="Randevu oluşturmak için lütfen giriş yapınız."
+                        type="warning"
+                        showIcon
+                        style={{ marginBottom: 0, width: "100%" }}
+                    />
+                )
+            }
         >
             {errorMessage && (
                 <Alert

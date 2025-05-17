@@ -1,3 +1,4 @@
+// ✅ Güncellenmiş `HizmetListesi.jsx`
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Card } from "antd";
@@ -10,28 +11,36 @@ const HizmetListesi = () => {
   const { service, city } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const query = new URLSearchParams(location.search);
 
   const [businesses, setBusinesses] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const serviceTitle = location.state?.serviceTitle || "Hizmet";
   const cityName = location.state?.cityName || "Şehir";
+  const mode = location.state?.mode || "service";
+  const salonAdi = query.get("salon");
 
   useEffect(() => {
-    const sid = parseInt(service);
-    const pid = parseInt(city);
-
     const fetchData = async () => {
       setLoading(true);
       try {
         const response = await fetch("http://localhost:5160/Business/GetAll");
         const result = await response.json();
-        console.log("Gelen veri:", result);
 
         if (result.success) {
-          const filtered = result.data.filter(
-            (b) => b.categoryId === sid && b.provinceCode === pid
-          );
+          let filtered = [];
+          if (mode === "service") {
+            const sid = parseInt(service);
+            const pid = parseInt(city);
+            filtered = result.data.filter(
+              (b) => b.categoryId === sid && b.provinceCode === pid
+            );
+          } else if (mode === "name" && salonAdi) {
+            filtered = result.data.filter((b) =>
+              b.businessName.toLowerCase().includes(salonAdi.toLowerCase())
+            );
+          }
           setBusinesses(filtered);
         } else {
           console.warn("Veri alınamadı:", result.message);
@@ -46,13 +55,15 @@ const HizmetListesi = () => {
     };
 
     fetchData();
-  }, [service, city]);
+  }, [service, city, mode, salonAdi]);
 
   return (
     <div className="hizmet-listesi-container">
       <Navbar />
       <h2 className="page-title">
-        {cityName} Şehrindeki "{serviceTitle}" Hizmeti Veren Yerler
+        {mode === "service"
+          ? `${cityName} Şehrindeki "${serviceTitle}" Hizmeti Veren Yerler`
+          : `"${salonAdi}" isimli salonlar`}
       </h2>
 
       <div className="card-wrapper">
@@ -90,9 +101,7 @@ const HizmetListesi = () => {
             </Card>
           ))
         ) : (
-          <p className="no-result">
-            Maalesef bu şehirde bu hizmet için işletme bulunamadı.
-          </p>
+          <p className="no-result">Sonuç bulunamadı.</p>
         )}
       </div>
 

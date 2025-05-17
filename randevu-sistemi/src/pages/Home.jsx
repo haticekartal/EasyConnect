@@ -1,3 +1,4 @@
+// ✅ Güncellenmiş `Home.jsx`
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -12,6 +13,8 @@ const Home = () => {
   const navigate = useNavigate();
   const [services, setServices] = useState([]);
   const [cities, setCities] = useState([]);
+  const [searchMode, setSearchMode] = useState("service"); // 'service' | 'name'
+  const [searchName, setSearchName] = useState("");
 
   useEffect(() => {
     axios.get("http://localhost:5160/Category/GetAll")
@@ -47,16 +50,25 @@ const Home = () => {
     const selectedService = JSON.parse(selectedServiceRaw);
     const selectedCity = JSON.parse(selectedCityRaw);
 
-    console.log("Seçilen hizmet:", selectedService);
-    console.log("Seçilen şehir:", selectedCity);
     navigate(`/hizmetlerin_listesi/${selectedService.id}/${selectedCity.id}`, {
       state: {
         serviceTitle: selectedService.name,
-        cityName: selectedCity.name
+        cityName: selectedCity.name,
+        mode: "service"
       }
     });
   };
 
+  const handleSearchByName = () => {
+    if (!searchName.trim()) {
+      alert("Lütfen salon adı giriniz.");
+      return;
+    }
+
+    navigate(`/hizmetlerin_listesi?salon=${encodeURIComponent(searchName)}`, {
+      state: { mode: "name" }
+    });
+  };
 
   return (
     <div>
@@ -64,32 +76,65 @@ const Home = () => {
       <div className="home-container">
         <img src={isletmeHomepage} alt="İşletme Homepage" className="homepage-img" />
 
-        <div className="search-bar-container">
-          <select aria-label="Hizmet seçiniz">
-            <option value="">Aradığınız hizmeti seçiniz</option>
-            {services.map(service => (
-              <option key={service.id} value={JSON.stringify({ id: service.id, name: service.name })}>
-                {service.name}
-              </option>
-            ))}
-          </select>
-
-          <select aria-label="Şehir seçiniz">
-            <option value="">Şehir seçiniz</option>
-            {cities.map(city => (
-              <option key={city.id} value={JSON.stringify({ id: city.id, name: city.name })}>
-                {city.name}
-              </option>
-            ))}
-          </select>
-
-          <button onClick={handleSearch}>
-            <SearchOutlined style={{ fontSize: "20px", color: "white" }} /> ARA
+        {/* ARAMA MOD BUTONLARI */}
+        <div className="search-mode-buttons">
+          <button
+            className={searchMode === "service" ? "active-tab" : ""}
+            onClick={() => setSearchMode("service")}
+          >
+            HİZMET
+          </button>
+          <button
+            className={searchMode === "name" ? "active-tab" : ""}
+            onClick={() => setSearchMode("name")}
+          >
+            SALON ADI
           </button>
         </div>
 
+        {/* ARAMA BARLARI */}
+        {searchMode === "service" ? (
+          <div className="search-bar-container">
+            <select aria-label="Hizmet seçiniz">
+              <option value="">Aradığınız hizmeti seçiniz</option>
+              {services.map(service => (
+                <option key={service.id} value={JSON.stringify({ id: service.id, name: service.name })}>
+                  {service.name}
+                </option>
+              ))}
+            </select>
+
+            <select aria-label="Şehir seçiniz">
+              <option value="">Şehir seçiniz</option>
+              {cities.map(city => (
+                <option key={city.id} value={JSON.stringify({ id: city.id, name: city.name })}>
+                  {city.name}
+                </option>
+              ))}
+            </select>
+
+            <button onClick={handleSearch}>
+              <SearchOutlined style={{ fontSize: "20px", color: "white" }} /> ARA
+            </button>
+          </div>
+        ) : (
+          <div className="search-bar-container">
+            <input
+              type="text"
+              placeholder="Aradığınız salonun adını yazınız"
+              value={searchName}
+              onChange={(e) => setSearchName(e.target.value)}
+              style={{ width: "100%", padding: "10px", fontSize: "16px" }}
+            />
+            <button onClick={handleSearchByName}>
+              <SearchOutlined style={{ fontSize: "20px", color: "white" }} /> ARA
+            </button>
+          </div>
+        )}
+
         <img src={homerandevu} alt="Homerandevu" className="homerandevu-img" />
 
+        {/* BİLGİ KARTLARI */}
         <div className="card-container">
           <div className="info-card">
             <div className="card-icon">
