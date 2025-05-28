@@ -1,7 +1,7 @@
 // ✅ Güncellenmiş `HizmetListesi.jsx`
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { Card } from "antd";
+import { Card, Rate } from "antd";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "../styles/HizmetListesi.css";
@@ -15,6 +15,7 @@ const HizmetListesi = () => {
 
   const [businesses, setBusinesses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [ratings, setRatings] = useState({});
 
   const serviceTitle = location.state?.serviceTitle || "Hizmet";
   const cityName = location.state?.cityName || "Şehir";
@@ -42,6 +43,21 @@ const HizmetListesi = () => {
             );
           }
           setBusinesses(filtered);
+
+          // Ortalama puanları getir
+          const ratingResults = {};
+          await Promise.all(
+            filtered.map(async (b) => {
+              const res = await fetch(`http://localhost:5160/Comment/get-by-business/${b.id}`);
+              const data = await res.json();
+              if (data.success && data.data.length > 0) {
+                const avg =
+                  data.data.reduce((sum, c) => sum + c.rating, 0) / data.data.length;
+                ratingResults[b.id] = avg;
+              }
+            })
+          );
+          setRatings(ratingResults);
         } else {
           console.warn("Veri alınamadı:", result.message);
           setBusinesses([]);
@@ -96,6 +112,12 @@ const HizmetListesi = () => {
                 <div className="card-info">
                   <h3>{item.businessName}</h3>
                   <p>{item.address}</p>
+                  {ratings[item.id] && (
+                    <div style={{ marginTop: 5 }}>
+                      <Rate allowHalf disabled value={ratings[item.id]} />
+                      <span style={{ marginLeft: 8 }}>({ratings[item.id].toFixed(1)})</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </Card>

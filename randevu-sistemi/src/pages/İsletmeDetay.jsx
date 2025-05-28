@@ -4,10 +4,12 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import StaffList from "../components/StaffList";
 import "../styles/IsletmeDetay.css";
-import { Modal, Select, TimePicker, DatePicker, message } from "antd";
+import { Modal, Select, TimePicker, DatePicker, message, Rate } from "antd";
 import dayjs from "dayjs";
 import axios from "axios";
 import CreateAppointment from "../components/CreateAppointment";
+import CommentSection from "../components/CommentSection";
+
 const { Option } = Select;
 
 const days = [
@@ -28,6 +30,7 @@ const IsletmeDetay = () => {
   const [staffList, setStaffList] = useState([]);
   const [serviceList, setServiceList] = useState([]);
   const [workingHours, setWorkingHours] = useState([]);
+  const [averageRating, setAverageRating] = useState(0);
 
   useEffect(() => {
     if (!salon?.userId) return;
@@ -38,7 +41,6 @@ const IsletmeDetay = () => {
         const id = res.data.id;
         setSalonId(id);
 
-        // ✅ Personelleri al
         axios.get("http://localhost:5160/staff/getall").then((res2) => {
           const filtered = res2.data.data.filter(
             (s) => s.businessProfileId === id
@@ -46,18 +48,28 @@ const IsletmeDetay = () => {
           setStaffList(filtered);
         });
 
-        // ✅ Hizmetleri al
         axios
           .get(`http://localhost:5160/Business/GetServicesForBusinessProfile/${id}`)
           .then((res3) => {
             setServiceList(res3.data.data || []);
           });
 
-        // ✅ Çalışma saatlerini al
         axios
           .get(`http://localhost:5160/WorkingHour/GetByBusinessProfileId/${id}`)
           .then((res4) => {
             setWorkingHours(res4.data.data || []);
+          });
+
+        // Ortalama puanı çek
+        axios.get(`http://localhost:5160/Comment/get-by-business/${id}`)
+          .then((res) => {
+            const yorumlar = res.data.data;
+            if (yorumlar.length > 0) {
+              const toplam = yorumlar.reduce((sum, y) => sum + y.rating, 0);
+              setAverageRating(toplam / yorumlar.length);
+            } else {
+              setAverageRating(0);
+            }
           });
       })
       .catch((err) => {
@@ -102,17 +114,24 @@ const IsletmeDetay = () => {
         {/* SOL TARAF */}
         <div className="left-side">
           <h2>{salon.businessName}</h2>
-          
-          <img
-  src={
-    salon.imageData
-      ? `data:image/jpeg;base64,${salon.imageData}`
-      : "https://via.placeholder.com/600x300?text=Fotoğraf+Yok"
-  }
-  alt="Ana Fotoğraf"
-  className="main-img"
-/>
+          {averageRating > 0 && (
+            <div style={{ marginTop: 5 }}>
+              <span style={{ fontWeight: "500", fontSize: 14 }}>Puan:</span>{" "}
+              <span style={{ fontSize: 16 }}>
+                <Rate allowHalf disabled value={averageRating} /> ({averageRating.toFixed(1)})
+              </span>
+            </div>
+          )}
 
+          <img
+            src={
+              salon.imageData
+                ? `data:image/jpeg;base64,${salon.imageData}`
+                : "https://via.placeholder.com/600x300?text=Fotoğraf+Yok"
+            }
+            alt="Ana Fotoğraf"
+            className="main-img"
+          />
 
           <div className="hours-box">
             <h3>Çalışma Saatleri</h3>
@@ -160,21 +179,20 @@ const IsletmeDetay = () => {
           </div>
         </div>
       </div>
+      <CommentSection businessId={salonId} />
       <Footer />
 
       {/* MODAL - RANDEVU */}
       {salonId && (
-  <CreateAppointment
-    open={modalOpen}
-    onClose={handleModalClose}
-    salonId={salonId}
-    staffList={staffList}
-    serviceList={serviceList}
-    userId={localStorage.getItem("userId")}
-  />
-)}
-
-
+        <CreateAppointment
+          open={modalOpen}
+          onClose={handleModalClose}
+          salonId={salonId}
+          staffList={staffList}
+          serviceList={serviceList}
+          userId={localStorage.getItem("userId")}
+        />
+      )}
     </div>
   );
 };

@@ -11,6 +11,7 @@ import IsletmeDetay from "./pages/İsletmeDetay";
 import IsletmeProfil from "./pages/İsletmeProfil";
 import MyAppointments from "./pages/MyAppointments";
 import IsletmeRandevular from "./pages/IsletmeRandevular";
+import BizeUlasin from "./pages/BizeUlasin";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/isletmeProfil" element={<IsletmeProfil />} />
         <Route path="/Randevularim" element={<MyAppointments />} />
         <Route path="/isletme-randevular" element={<IsletmeRandevular />} />
+        <Route path="/bize-ulasin" element={<BizeUlasin />} />
 
       </Routes>
     </Router>

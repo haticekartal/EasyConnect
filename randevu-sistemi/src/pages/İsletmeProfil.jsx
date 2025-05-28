@@ -77,7 +77,7 @@ const IsletmeProfil = () => {
             reader.onloadend = () => {
                 setFormData((prev) => ({
                     ...prev,
-                    imageData: reader.result.split(",")[1], // sadece base64 içeriği al
+                    imageData: reader.result.split(",")[1],
                 }));
             };
             reader.readAsDataURL(file);
@@ -174,11 +174,27 @@ const IsletmeProfil = () => {
                     ))}
                 </Select>
 
+                {/* GÖRSEL SEÇME LABEL + INPUT */}
+                <label
+                    htmlFor="fileInput"
+                    style={{
+                        display: "inline-block",
+                        padding: "6px 12px",
+                        marginTop: 10,
+                        border: "1px solid #d9d9d9",
+                        borderRadius: 4,
+                        cursor: "pointer",
+                        userSelect: "none"
+                    }}
+                >
+                    İşletme Fotoğrafı Seç
+                </label>
                 <input
+                    id="fileInput"
                     type="file"
                     accept="image/*"
                     onChange={handleFileChange}
-                    style={{ marginTop: 10 }}
+                    style={{ display: "none" }}
                 />
 
                 <Button
